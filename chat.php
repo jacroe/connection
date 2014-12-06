@@ -1,4 +1,4 @@
 <?php
 require "scalene/Scalene.php";
 
-$_->view->display("index");
+$_->view->display("chat");

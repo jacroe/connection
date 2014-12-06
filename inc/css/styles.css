@@ -1,0 +1,10 @@
+.c-logo { font-family: "Pacifico", cursive;}
+
+#chatMessages {
+	overflow:auto;
+	height:500px;
+	position: relative;
+}
+#chatMessages p {
+
+}
