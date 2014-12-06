@@ -6,6 +6,13 @@ class Channel extends Model
 	private $channel_name;
 	private $language;
 
+	public function setup($name, $language)
+	{
+		$this->channel_name = $name;
+		$this->id = $this->_get_id($name);
+		$this->language = $language;
+	}
+
 	public function get_messages()
 	{
 		$messages = $this->_format_messages($this->database->get("messages", "`channelId` = {$this->id} ORDER BY `timestamp`"));
@@ -19,16 +26,10 @@ class Channel extends Model
 			array(
 				"channelId"=>$this->id,
 				"userId"=>$userId,
-				"message"=>$message
+				"message"=>$message,
+				"language"=>$this->language
 			)
 		);
-	}
-
-	public function setup($name, $language)
-	{
-		$this->channel_name = $name;
-		$this->id = $this->_get_id($name);
-		$this->language = $language;
 	}
 
 	private function _get_id($name)
@@ -44,7 +45,10 @@ class Channel extends Model
 	{
 		$return = array();
 		foreach($msgs as $m)
+		{
+			$m["user"] = $this->user->get_user($m["userId"]);
 			$return[] = (object)$m;
+		}
 
 		foreach ($return as $m)
 		{
@@ -73,7 +77,6 @@ class Channel extends Model
 				$m->translated_language = $this->language;
 			}
 		}
-
 
 		return $return;
 	}
