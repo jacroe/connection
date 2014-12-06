@@ -1,0 +1,6 @@
+data/views_c/
+scalene/config.php
+scalene/extlib/composer/
+test.php
+
+*.sublime*
