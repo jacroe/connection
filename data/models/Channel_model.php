@@ -15,7 +15,7 @@ class Channel extends Model
 
 	public function get_messages()
 	{
-		$messages = $this->_format_messages($this->database->get("messages", "`channelId` = {$this->id} ORDER BY `timestamp`"));
+		$messages = $this->_format_messages($this->database->get("messages", "`channelId` = {$this->id} ORDER BY `timestamp` LIMIT 20"));
 		return $messages;
 	}
 
@@ -27,7 +27,8 @@ class Channel extends Model
 				"channelId"=>$this->id,
 				"userId"=>$userId,
 				"message"=>$message,
-				"language"=>$this->language
+				"language"=>$this->language,
+				"timestamp"=>time()
 			)
 		);
 	}
@@ -47,6 +48,8 @@ class Channel extends Model
 		foreach($msgs as $m)
 		{
 			$m["user"] = $this->user->get_user($m["userId"]);
+			unset($m["user"]->id);
+			unset($m["userId"]);
 			$return[] = (object)$m;
 		}
 
