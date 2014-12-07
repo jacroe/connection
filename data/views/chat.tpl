@@ -13,8 +13,10 @@
 			</div>
 		</div>
 		<aside class="col-md-4">
-			<h1>Languages</h1>
-			<p>English, French, Spanish</p>
+			<div id="languageList">
+				<h1>Languages</h1>
+				<p></p>
+			</div>
 			<hr />
 			<div id="userlist">
 				<h1>Chat list</h1>

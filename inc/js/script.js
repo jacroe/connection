@@ -35,10 +35,14 @@ function load_messages() {
 
 function load_users() {
 	$.get("api.php", {json:JSON.stringify({"method":"channel.users","params":{"channel":channel,"language":language}})}).done(function(data) {
+		languages = [];
 		$("#userlist p").remove();
 		$.each(data.data, function(key, value) {
-			$("#userlist").append("<p>" + value.name + "(" + value.language + ")</p>");
-		})
+			$("#userlist").append("<p>" + value.name + " <img src=inc/images/" + value.language + ".png /></p>");
+			if (languages.indexOf(value.language) == -1)
+				languages.push(value.language);
+		});
+		$("#languageList p").html(languages_template(languages));
 	});
 }
 
@@ -47,4 +51,12 @@ function messages_template(msg) {
 	d.setUTCSeconds(msg.timestamp);
 	time = d.getHours() + ':' + d.getMinutes();
 	return "<p id=" + msg.id + "><span class=msg-name>" + msg.user.name + "</span> <span class=msg-date>(" + time + ")</span> &ndash; " + msg.message + "</p>";
+}
+
+function languages_template(langs) {
+	returnText = "";
+	$.each(langs, function(key, lang) {
+		returnText += "<img src=inc/images/" + lang + ".png alt=" + lang.toUpperCase() + " title=" + lang.toUpperCase() + " />"
+	})
+	return returnText
 }
