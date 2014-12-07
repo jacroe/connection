@@ -15,8 +15,8 @@ elseif (isset($_GET["json"]))
 			$data = $_->channel->get_messages();
 			$response = "ok";
 			break;
-		case "message.add":
-			$_->channel->setup("test", $_->users->getUser());
+		case "messages.add":
+			$_->channel->setup("test", $user->language);
 			$_->channel->add_message($json->params->message, $user->id);
 			$response = "ok";
 			break;

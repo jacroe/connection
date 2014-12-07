@@ -3,6 +3,13 @@ $(document).ready(function() {
 	{
 		$.get("api.php", {json:JSON.stringify({"method":"user.add"})});
 		start_timers();
+
+		Mousetrap.reset();
+		Mousetrap.bind(['ctrl+enter', 'enter'], function() {
+			post_message($("#postMessage").val());
+			$("#postMessage").val("");
+			return false;
+		});
 	}
 });
 
@@ -12,7 +19,11 @@ function start_timers() {
 	setInterval(function() {
 		load_messages();
 		load_users();
-	}, 3000);
+	}, 2000);
+}
+
+function post_message(message) {
+	$.get("api.php", {json:JSON.stringify({"method":"messages.add", "params":{"message":message}})});
 }
 
 function load_messages() {

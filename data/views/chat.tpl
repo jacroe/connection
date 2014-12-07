@@ -7,7 +7,11 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<input type="text" placeholder="Enter a message..." />
+					<form role="form">
+						<div class="form-group">
+							<label class="sr-only" for="postMessage">Message: </label>
+							<input type="text" class="form-control mousetrap" id="postMessage" placeholder="Enter a message..." />
+						</div>
 				</div>
 			</div>
 		</div>
