@@ -2,25 +2,26 @@
 require "scalene/Scalene.php";
 
 header("Content-type: application/json");
-if (isset($_GET["json"]))
+if (!$user = $_->users->getUser())
+	$response = "bad";
+elseif (isset($_GET["json"]))
 {
 	$json = json_decode($_GET["json"]);
 
 	switch($json->method)
 	{
 		case "messages.get":
-			$_->channel->setup($json->params->channel, $json->params->language);
+			$_->channel->setup("test", $user->language);
 			$data = $_->channel->get_messages();
 			$response = "ok";
 			break;
 		case "message.add":
-			$_->channel->setup($json->params->channel, $json->params->language);
-			$user = $_->user->get_user($json->params->userId);
+			$_->channel->setup("test", $_->users->getUser());
 			$_->channel->add_message($json->params->message, $user->id);
 			$response = "ok";
 			break;
 		case "channel.users":
-			$_->channel->setup($json->params->channel, "");
+			$_->channel->setup("test", "");
 			$data = $_->channel->get_users();
 			$response = "ok";
 			break;
@@ -28,7 +29,9 @@ if (isset($_GET["json"]))
 			$response = "ok";
 			break;
 		case "user.add":
-			$response = "bad";
+			$_->channel->setup("test", "");
+			$_->channel->add_user($json->params->username);
+			$response = "ok";
 			break;
 	}
 }

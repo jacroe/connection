@@ -40,12 +40,19 @@ class Channel extends Model
 		$rows = $this->database->get("channelUserlist", "`channelId` = {$this->id}");
 		foreach($rows as $row)
 		{
-			$u = $this->user->get_user($row["userId"]);
+			$u = $this->_get_user($row["userId"]);
 			unset($u->id);
 			$users[] = $u;
 		}
 
 		return $users;
+	}
+
+	public function add_user($username)
+	{
+		$user = $this->_get_user($username);
+		if (!$this->database->numRows("channelUserlist", "`channelId` = {$this->id} AND `userId` = {$user->id}"))
+			$this->database->insert("channelUserlist", array("channelId"=>$this->id, "userId"=>$user->id));
 	}
 
 	private function _get_id($name)
@@ -57,12 +64,26 @@ class Channel extends Model
 		return $rows[0]["id"];
 	}
 
+	public function _get_user($userId)
+	{
+		if (is_numeric($userId))
+			$rows = $this->database->get("users", "`id` = $userId");
+		else
+			$rows = $this->database->get("users", "`name` = '$userId'");
+
+		$user = (object)($rows[0]);
+		unset($user->email);
+		unset($user->password);
+
+		return $user;
+	}
+
 	private function _format_messages($msgs)
 	{
 		$return = array();
 		foreach($msgs as $m)
 		{
-			$m["user"] = $this->user->get_user($m["userId"]);
+			$m["user"] = $this->_get_user($m["userId"]);
 			unset($m["user"]->id);
 			unset($m["userId"]);
 			$return[] = (object)$m;
