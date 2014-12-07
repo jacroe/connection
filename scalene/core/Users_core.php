@@ -1,6 +1,6 @@
 <?php
 session_start();
-session_regenerate_id(true);
+session_regenerate_id();
 
 class Users extends Core
 {
@@ -33,7 +33,7 @@ class Users extends Core
 		{
 			$user = $this->database->get($this->dbtable, "`username` = '{$_SESSION["user"]}'");
 			unset($user[0]["password"]);
-			return $user[0];
+			return (object)($user[0]);
 		}
 		
 		else
@@ -77,6 +77,7 @@ class Users extends Core
 		$user = $userRows[0];
 		if ($this->phpass->CheckPassword($password, $user["password"]))
 		{
+			session_regenerate_id(true);
 			$_SESSION["user"] = $username;
 			return true;
 		}
