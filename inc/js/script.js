@@ -40,12 +40,12 @@ function load_messages() {
 						$('<div>').attr('class', "avatar").html(
 							$('<img>').attr({
 								'src' : msg.user.image,
-								'title' : ucfirst(msg.user.username)
+								'title' : msg.user.username.ucfirst()
 							})
 						),
 						$('<div>').attr('class', 'messages').html([
 							$('<p>').html(msg.message),
-							$('<time>').attr('datetime', html5_time(msg.timestamp)).text(pretty_time(msg.timestamp))
+							$('<time>').attr('datetime', html5_time(msg.timestamp)).text(msg.user.username.ucfirst() + " • " + pretty_time(msg.timestamp))
 						])
 					]).appendTo('#chatBox ol');
 				});
@@ -99,8 +99,8 @@ function pad (str, max) { // http://stackoverflow.com/a/6466243/3413608
 	return str.length < max ? pad("0" + str, max) : str;
 }
 
-function ucfirst(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
+String.prototype.ucfirst = function () {
+	return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 // http://stackoverflow.com/a/14853974/3413608
