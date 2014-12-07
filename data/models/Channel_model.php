@@ -33,6 +33,21 @@ class Channel extends Model
 		);
 	}
 
+	public function get_users()
+	{
+		$users = array();
+
+		$rows = $this->database->get("channelUserlist", "`channelId` = {$this->id}");
+		foreach($rows as $row)
+		{
+			$u = $this->user->get_user($row["userId"]);
+			unset($u->id);
+			$users[] = $u;
+		}
+
+		return $users;
+	}
+
 	private function _get_id($name)
 	{
 		if (!$this->database->numRows("channel", "`name` = '$name'"))
