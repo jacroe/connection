@@ -3,7 +3,6 @@
 		<div class="container col-md-8">
 			<div class="row">
 				<article class="col-md-12" id="chatMessages">
-					
 				</article>
 			</div>
 			<div class="row">
