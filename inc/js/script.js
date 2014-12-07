@@ -6,8 +6,7 @@ $(document).ready(function() {
 
 		Mousetrap.reset();
 		Mousetrap.bind(['ctrl+enter', 'enter'], function() {
-			post_message($("#postMessage").val());
-			$("#postMessage").val("");
+			post_message();
 			return false;
 		});
 
@@ -24,8 +23,9 @@ function start_timers() {
 	}, 2000);
 }
 
-function post_message(message) {
-	$.get("api.php", {json:JSON.stringify({"method":"messages.add", "params":{"message":message}})});
+function post_message() {
+	$.get("api.php", {json:JSON.stringify({"method":"messages.add", "params":{"message":$("#postMessage").val()}})});
+	$("#postMessage").val("");
 }
 
 function load_messages() {
@@ -33,6 +33,7 @@ function load_messages() {
 		$.each(data.data, function(key, value) {
 			if(!$("#" + value.id).length) {
 				atBottom = isAtBottom();
+				console.log(value.message);
 				$("#chatMessages").append(messages_template(value));
 				if (atBottom) // We were at the bottom, so push it on down
 					document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
