@@ -44,7 +44,7 @@ function load_messages() {
 							})
 						),
 						$('<div>').attr('class', 'messages').html([
-							$('<p>').html(msg.message),
+							$('<p>').attr('title', ("original_message" in msg) ? msg.original_message : "").html(msg.message),
 							$('<time>').attr('datetime', html5_time(msg.timestamp)).text(msg.user.username.ucfirst() + " • " + pretty_time(msg.timestamp))
 						])
 					]).appendTo('#chatBox ol');
