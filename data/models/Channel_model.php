@@ -22,16 +22,19 @@ class Channel extends Model
 
 	public function add_message($message, $userId)
 	{
-		$this->database->insert(
-			"messages", 
-			array(
-				"channelId"=>$this->id,
-				"userId"=>$userId,
-				"message"=>$message,
-				"language"=>$this->language,
-				"timestamp"=>time()
-			)
-		);
+		if ($message != "")
+		{
+			$this->database->insert(
+				"messages",
+				array(
+					"channelId"=>$this->id,
+					"userId"=>$userId,
+					"message"=>$message,
+					"language"=>$this->language,
+					"timestamp"=>time()
+				)
+			);
+		}
 	}
 
 	public function get_users()
