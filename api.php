@@ -19,6 +19,11 @@ if (isset($_GET["json"]))
 			$_->channel->add_message($json->params->message, $user->id);
 			$response = "ok";
 			break;
+		case "channel.users":
+			$_->channel->setup($json->params->channel, "");
+			$data = $_->channel->get_users();
+			$response = "ok";
+			break;
 		case "user.ping":
 			$response = "ok";
 			break;
