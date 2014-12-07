@@ -44,7 +44,7 @@ function load_users() {
 function messages_template(msg) {
 	d = new Date(0);
 	d.setUTCSeconds(msg.timestamp);
-	time = d.getHours() + ':' + d.getMinutes();
+	time = pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2);
 	return "<p id=" + msg.id + "><span class=msg-name>" + msg.user.username + "</span> <span class=msg-date>(" + time + ")</span> &ndash; " + msg.message + "</p>";
 }
 
@@ -59,4 +59,9 @@ function languages_template(langs) {
 function isAtBottom() {
 	cmDiv = document.getElementById('chatMessages');
 	return cmDiv.clientHeight + cmDiv.scrollTop == cmDiv.scrollHeight;
+}
+
+function pad (str, max) { // http://stackoverflow.com/a/6466243/3413608
+	str = str.toString();
+	return str.length < max ? pad("0" + str, max) : str;
 }
