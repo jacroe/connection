@@ -15,7 +15,8 @@ class Channel extends Model
 
 	public function get_messages()
 	{
-		$messages = $this->_format_messages($this->database->get("messages", "`channelId` = {$this->id} ORDER BY `timestamp` LIMIT 20"));
+		$messages = $this->_format_messages($this->database->get("messages", "`channelId` = {$this->id} ORDER BY `timestamp` DESC LIMIT 20"));
+		$messages = array_reverse($messages);
 		return $messages;
 	}
 
