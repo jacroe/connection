@@ -33,4 +33,20 @@ class Translate extends Model
 
 		return $json->data->detections[0][0];
 	}
+
+	public function language_list($arrayLanguages, $language)
+	{
+		$url = "https://www.googleapis.com/language/translate/v2/languages?key={$this->apikey}&target=$language";
+		$json = json_decode(file_get_contents($url));
+		$fullLanguageList = array();
+		$languageList = array();
+
+		foreach($json->data->languages as $l)
+			$fullLanguageList[$l->language] = $l->name;
+
+		foreach($arrayLanguages as $l)
+			$languageList[] = $fullLanguageList[$l];
+
+		return $languageList;
+	}
 }

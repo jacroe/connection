@@ -1,3 +1,5 @@
+var oldLangList = [];
+
 $(document).ready(function() {
 	if (document.URL.split("/")[document.URL.split("/").length-1] === "chat.php")
 	{
@@ -56,30 +58,20 @@ function load_messages() {
 
 function load_users() {
 	$.get("api.php", {json:JSON.stringify({"method":"channel.users"})}).done(function(data) {
-		languages = [];
+		newLangList = [];
 		$("#userlist img").remove();
 		$.each(data.data, function(key, value) {
 			$("#userlist").append('<img src="' + value.image + '" alt="' + value.username +'"/> ');
-			if (languages.indexOf(value.language) == -1)
-				languages.push(value.language);
+			if (newLangList.indexOf(value.language) == -1)
+				newLangList.push(value.language);
 		});
-		$("#languageList p").html(languages_template(languages));
+		if (!oldLangList.equals(newLangList.sort())) {
+			$.get("api.php", {json:JSON.stringify({"method":"language.list", "params":{"list":newLangList}})}).done(function(langListFullName) {
+					$("#languageList p").html(langListFullName.data.join(", "));
+			});
+		}
+		oldLangList = newLangList;
 	});
-}
-
-function messages_template(msg) {
-	d = new Date(0);
-	d.setUTCSeconds(msg.timestamp);
-	time = pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2);
-	return '<li id=' + msg.id + ' class="other"><div class=avatar><img src="' + msg.user.image + '" title="' + ucfirst(msg.user.username) + '" /></div> <div class="messages"><p>' + msg.message + '</p></div></li>';
-}
-
-function languages_template(langs) {
-	returnText = "";
-	$.each(langs, function(key, lang) {
-		returnText += '<img src=inc/images/' + lang + '.png alt=' + lang.toUpperCase() + ' title=' + lang.toUpperCase() + ' /> ';
-	})
-	return returnText
 }
 
 function html5_time(timestamp) {
@@ -109,4 +101,30 @@ function pad (str, max) { // http://stackoverflow.com/a/6466243/3413608
 
 function ucfirst(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// http://stackoverflow.com/a/14853974/3413608
+// attach the .equals method to Array's prototype to call it on any array
+Array.prototype.equals = function (array) {
+	// if the other array is a falsy value, return
+	if (!array)
+		return false;
+
+	// compare lengths - can save a lot of time 
+	if (this.length != array.length)
+		return false;
+
+	for (var i = 0, l=this.length; i < l; i++) {
+		// Check if we have nested arrays
+		if (this[i] instanceof Array && array[i] instanceof Array) {
+			// recurse into the nested arrays
+			if (!this[i].equals(array[i]))
+				return false;
+		}
+		else if (this[i] != array[i]) { 
+			// Warning - two different object instances will never be equal: {x:20} != {x:20}
+			return false;
+		}
+	}
+	return true;
 }

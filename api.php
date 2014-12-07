@@ -33,6 +33,10 @@ elseif (isset($_GET["json"]))
 			$_->channel->add_user($user->username);
 			$response = "ok";
 			break;
+		case "language.list":
+			$data = $_->translate->language_list($json->params->list, $user->language);
+			$response = "ok";
+			break;
 		default:
 			$response = "bad";
 			break;
