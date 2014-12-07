@@ -1,10 +1,80 @@
 .c-logo { font-family: "Pacifico", cursive;}
 
-#chatMessages {
+/* http://codepen.io/chrisboon27/pen/fakEe */
+#chatBox {
 	overflow:auto;
-	height:500px;
+	height:600px;
 	position: relative;
+	background: #e5e5e5;
 }
-#chatMessages p {
 
+#chatBox ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 0;
+}
+#chatBox ol li {
+  padding: 0.5em;
+  overflow: hidden;
+  position: relative;
+}
+#chatBox ol .avatar {
+  width: 40px;
+  position: absolute;
+}
+#chatBox ol .avatar img {
+  display: block;
+  width: 100%;
+}
+
+.other .avatar:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border: 5px solid #fff;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+.other .messages {
+  margin-left: 40px;
+  float: left;
+}
+
+.self .messages {
+  margin-right: 40px;
+  float: right;
+  border-bottom-right-radius: 0;
+}
+.self .avatar {
+  right: 0.5em;
+  bottom: 0.5em;
+}
+.self .avatar:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border: 5px solid white;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.messages {
+  background: #fff;
+  padding: 10px;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.messages p {
+  margin: 0;
+}
+.messages time {
+  font-size: 0.7em;
+  color: #ccc;
 }

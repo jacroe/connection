@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Connection</title>
+	<title>{{$lang.connection}}</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="{{$ROOT_PATH}}inc/css/jumbotron-narrow.css" />
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Pacifico" />
