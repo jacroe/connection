@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	if (document.URL.split("/")[document.URL.split("/").length-1] === "chat.php")
+	{
+		$.get("api.php", {json:JSON.stringify({"method":"user.add"})});
 		start_timers();
+	}
 });
 
 function start_timers() {

@@ -55,6 +55,12 @@ class Channel extends Model
 			$this->database->insert("channelUserlist", array("channelId"=>$this->id, "userId"=>$user->id));
 	}
 
+	public function remove_user($username)
+	{
+		$user = $this->_get_user($username);
+		$this->database->delete("channelUserlist", array("channelId"=>$this->id, "userId"=>$user->id));
+	}
+
 	private function _get_id($name)
 	{
 		if (!$this->database->numRows("channel", "`name` = '$name'"))
@@ -69,7 +75,7 @@ class Channel extends Model
 		if (is_numeric($userId))
 			$rows = $this->database->get("users", "`id` = $userId");
 		else
-			$rows = $this->database->get("users", "`name` = '$userId'");
+			$rows = $this->database->get("users", "`username` = '$userId'");
 
 		$user = (object)($rows[0]);
 		unset($user->email);

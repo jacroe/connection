@@ -30,8 +30,11 @@ elseif (isset($_GET["json"]))
 			break;
 		case "user.add":
 			$_->channel->setup("test", "");
-			$_->channel->add_user($json->params->username);
+			$_->channel->add_user($user->username);
 			$response = "ok";
+			break;
+		default:
+			$response = "bad";
 			break;
 	}
 }
