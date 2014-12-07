@@ -22,7 +22,7 @@
 			</div>
 			<hr />
 			<div id="userlist">
-				<h1>Chat list</h1>
+				<h1>Chat List</h1>
 			</div>
 		</aside>
 	</div>

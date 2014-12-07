@@ -10,6 +10,8 @@ $(document).ready(function() {
 			$("#postMessage").val("");
 			return false;
 		});
+
+		document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
 	}
 });
 
@@ -42,9 +44,9 @@ function load_messages() {
 function load_users() {
 	$.get("api.php", {json:JSON.stringify({"method":"channel.users"})}).done(function(data) {
 		languages = [];
-		$("#userlist p").remove();
+		$("#userlist img").remove();
 		$.each(data.data, function(key, value) {
-			$("#userlist").append("<p>" + value.username + " <img src=inc/images/" + value.language + ".png /></p>");
+			$("#userlist").append("<img src='" + value.image + "' alt='" + value.username +"'/> ");
 			if (languages.indexOf(value.language) == -1)
 				languages.push(value.language);
 		});

@@ -78,6 +78,7 @@ class Channel extends Model
 			$rows = $this->database->get("users", "`username` = '$userId'");
 
 		$user = (object)($rows[0]);
+		$user->image = "http://www.gravatar.com/avatar/".md5($user->email)."/?s=33&d=identicon";
 		unset($user->email);
 		unset($user->password);
 
