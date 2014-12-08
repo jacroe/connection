@@ -35,25 +35,27 @@ function load_messages() {
 		$.each(data.data, function(key, msg) {
 			if(!$("#" + msg.id).length) {
 				atBottom = isAtBottom();
-				$(function() {
-					$('<li>').attr('id', msg.id).attr('class', (msg.user.username === user ? 'self' : 'other')).html([
-						$('<div>').attr('class', "avatar").html(
-							$('<img>').attr({
-								'src' : msg.user.image,
-								'title' : msg.user.username.ucfirst()
-							})
-						),
-						$('<div>').attr('class', 'messages').html([
-							$('<p>').attr('title', ("original_message" in msg) ? msg.original_message : "").html(msg.message),
-							$('<time>').attr('datetime', html5_time(msg.timestamp)).text(msg.user.username.ucfirst() + " • " + pretty_time(msg.timestamp))
-						])
-					]).appendTo('#chatBox ol');
-				});
+				add_message(msg);
 				if (atBottom) // We were at the bottom, so push it on down
 					document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
 			}
 		})
 	});
+}
+
+function add_message(msg) {
+	$('<li>').attr('id', msg.id).attr('class', (msg.user.username === user ? 'self' : 'other')).html([
+		$('<div>').attr('class', "avatar").html(
+			$('<img>').attr({
+				'src' : msg.user.image,
+				'title' : msg.user.username.ucfirst()
+			})
+		),
+		$('<div>').attr('class', 'messages').html([
+			$('<p>').attr('title', ("original_message" in msg) ? msg.original_message : "").html(msg.message),
+			$('<time>').attr('datetime', html5_time(msg.timestamp)).text(msg.user.username.ucfirst() + " • " + pretty_time(msg.timestamp))
+		])
+	]).appendTo('#chatBox ol');
 }
 
 function load_users() {
