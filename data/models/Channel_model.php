@@ -6,10 +6,19 @@ class Channel extends Model
 	private $channel_name;
 	private $language;
 
-	public function setup($name, $language)
+	public function setup($channel, $language)
 	{
-		$this->channel_name = $name;
-		$this->id = $this->_get_id($name);
+		if (is_numeric($channel)) // Channel already exists if we have a numeric
+		{
+			$rows = $this->database->get("channel", "`id` = $channel");
+			$this->channel_name = $rows[0]["name"];
+			$this->id = $channel;
+		}
+		else // May exist, may not.
+		{
+			$this->channel_name = $channel;
+			$this->id = $this->_lookup_id($channel);
+		}
 		$this->language = $language;
 	}
 
@@ -41,12 +50,15 @@ class Channel extends Model
 	{
 		$users = array();
 
-		$rows = $this->database->get("channelUserlist", "`channelId` = {$this->id}");
+		$rows = $this->database->get("users", "`channelId` = {$this->id}");
 		foreach($rows as $row)
 		{
-			$u = $this->_get_user($row["userId"]);
-			unset($u->id);
-			$users[] = $u;
+			$user = (object)($row);
+			$user->image = "http://www.gravatar.com/avatar/".md5($user->email)."/?s=33&d=identicon";
+			unset($user->email);
+			unset($user->password);
+			unset($user->id);
+			$users[] = $user;
 		}
 
 		return $users;
@@ -54,18 +66,26 @@ class Channel extends Model
 
 	public function add_user($username)
 	{
-		$user = $this->_get_user($username);
-		if (!$this->database->numRows("channelUserlist", "`channelId` = {$this->id} AND `userId` = {$user->id}"))
-			$this->database->insert("channelUserlist", array("channelId"=>$this->id, "userId"=>$user->id));
+		$this->remove_user($username); // Remove from any other channel, just to be safe
+		$this->database->update("users", array("channelId"=>$this->id), "`username` = '$username'");
 	}
 
 	public function remove_user($username)
 	{
-		$user = $this->_get_user($username);
-		$this->database->delete("channelUserlist", array("channelId"=>$this->id, "userId"=>$user->id));
+		$this->database->update("users", array("channelId"=>null), "`username` = '$username'");
 	}
 
-	private function _get_id($name)
+	public function get_id()
+	{
+		return $this->id;
+	}
+
+	public function get_name()
+	{
+		return $this->channel_name;
+	}
+
+	private function _lookup_id($name)
 	{
 		if (!$this->database->numRows("channel", "`name` = '$name'"))
 			$this->database->insert("channel", array("name"=>$name));

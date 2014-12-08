@@ -3,7 +3,7 @@
 /* http://codepen.io/chrisboon27/pen/fakEe */
 #chatBox {
 	overflow:auto;
-	height:600px;
+	height:500px;
 	position: relative;
 	background: #e5e5e5;
 }

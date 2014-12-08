@@ -3,7 +3,7 @@ var oldLangList = [];
 $(document).ready(function() {
 	if (document.URL.split("/")[document.URL.split("/").length-1] === "chat.php")
 	{
-		$.get("api.php", {json:JSON.stringify({"method":"user.add"})});
+		change_channel(channelname);
 		start_timers();
 
 		Mousetrap.reset();
@@ -23,6 +23,17 @@ function start_timers() {
 		load_messages();
 		load_users();
 	}, 2000);
+}
+
+function change_channel(name) {
+	if (name.isEmpty())
+		return;
+	$.get("api.php", {json:JSON.stringify({"method":"user.add", "params":{"channel":name}})}).done(function() {
+		$("#channelname").text("#" + name);
+		$("#chatBox li").remove();
+		load_users();
+		load_messages();
+	});
 }
 
 function post_message() {
@@ -103,6 +114,10 @@ function pad (str, max) { // http://stackoverflow.com/a/6466243/3413608
 
 String.prototype.ucfirst = function () {
 	return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+String.prototype.isEmpty = function () {
+	return this === null || this.match(/^\s*$/) !== null;
 }
 
 // http://stackoverflow.com/a/14853974/3413608

@@ -2,6 +2,7 @@
 	<div class="row">
 		<div class="container col-md-9">
 			<div class="row">
+				<h1 id="channelname">#{{$channelname}}</h1>
 				<article class="col-md-12" id="chatBox">
 					<ol>
 					</ol>
@@ -32,5 +33,6 @@
 	</div>
 	<script>
 		var user = "{{$user->username}}";
+		var channelname = "{{$channelname}}";
 	</script>
 {{include file="footer.tpl"}}
