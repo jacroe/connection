@@ -8,6 +8,8 @@ class Channel extends Model
 
 	public function setup($channel, $language)
 	{
+		if (!$channel)
+			return;
 		if (is_numeric($channel)) // Channel already exists if we have a numeric
 		{
 			$rows = $this->database->get("channel", "`id` = $channel");
@@ -16,6 +18,8 @@ class Channel extends Model
 		}
 		else // May exist, may not.
 		{
+			$channel = trim(preg_replace("![^a-z0-9]+!i", "-", strtolower(trim($channel))), "-");
+
 			$this->channel_name = $channel;
 			$this->id = $this->_lookup_id($channel);
 		}

@@ -1,10 +1,14 @@
 var oldLangList = [];
+var intervalVal;
 
 $(document).ready(function() {
 	if (document.URL.split("/")[document.URL.split("/").length-1] === "chat.php")
 	{
-		change_channel(channelname);
-		start_timers();
+		if (channelname !== "") {
+			change_channel(channelname);
+		} else {
+			$('#channelSwitch').modal('show');
+		}
 
 		Mousetrap.reset();
 		Mousetrap.bind(['ctrl+enter', 'enter'], function() {
@@ -19,7 +23,10 @@ $(document).ready(function() {
 function start_timers() {
 	load_users();
 	load_messages();
-	setInterval(function() {
+
+	if (intervalVal)
+		clearInterval(intervalVal);
+	intervalVal = setInterval(function() {
 		load_messages();
 		load_users();
 	}, 2000);
@@ -28,11 +35,11 @@ function start_timers() {
 function change_channel(name) {
 	if (name.isEmpty())
 		return;
-	$.get("api.php", {json:JSON.stringify({"method":"user.add", "params":{"channel":name}})}).done(function() {
-		$("#channelname").text("#" + name);
+	console.log("change_channel has run");
+	$.get("api.php", {json:JSON.stringify({"method":"user.add", "params":{"channel":name}})}).done(function(data) {
+		$(".channelname").text(data.data.channelname);
 		$("#chatBox li").remove();
-		load_users();
-		load_messages();
+		start_timers();
 	});
 }
 

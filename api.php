@@ -31,6 +31,7 @@ elseif (isset($_GET["json"]))
 		case "user.add":
 			$_->channel->setup($json->params->channel, "");
 			$_->channel->add_user($user->username);
+			$data = array("channelname"=>$_->channel->get_name());
 			$response = "ok";
 			break;
 		case "language.list":
