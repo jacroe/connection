@@ -1,5 +1,6 @@
 <?php
 require "scalene/Scalene.php";
+require "lang.php";
 
 $_->load->core("users");
 
@@ -12,4 +13,5 @@ if ($_POST["username"])
 if ($user = $_->users->userLoggedIn())
 	header("Location: chat.php");
 
+$_->view->assign("lang", $lang["en"]);
 $_->view->display("login", $data);

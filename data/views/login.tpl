@@ -1,5 +1,5 @@
 {{include file="header.tpl" pageTitle="Login"}}
-	<div class="row">
+	<div class="row marketing">
 		<div class="col-lg-12">
 			<h1>Login</h1>
 {{foreach $errors as $error}}
