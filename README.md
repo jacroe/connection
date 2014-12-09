@@ -1,6 +1,8 @@
 Connection
 ==========
 
+![KodingBadge](http://i.imgur.com/HgV7Xpg.png)
+
 ![](https://i.imgur.com/JZFCWap.gif)
 
 Connection is a real-time, universal (60+ languages) translator, chat app. Users can speak and read messages in their own language with anybody else.
